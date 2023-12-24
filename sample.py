@@ -1,12 +1,14 @@
+import cv2
 import insightface
 from insightface.app import FaceAnalysis
 
-app = FaceAnalysis()
-app.prepare(ctx_id=0, det_size=(640, 640))
+app = FaceAnalysis(providers=['CPUExecutionProvider'])
+app.prepare(ctx_id=-1, det_size=(640, 640))
 
-import cv2
 img = cv2.imread('sample.jpg')
 
 faces = app.get(img)
+# print(faces)
 
-print(faces)
+rimg = app.draw_on(img, faces)
+cv2.imwrite("./t1_output.jpg", rimg)
